@@ -1,49 +1,34 @@
-import mysql.connector
-#from mysql.connector import Error
+from flask_sqlalchemy import SQLAlchemy
 from config import Config
+from flask import Flask
 
+app = Flask(__name__)
+app.config.from_object(Config)
+db = SQLAlchemy(app)
 
+class Drogueria(db.Model):
+    __tablename__ = 'droguerias'
+    id_drogueria = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    nombre = db.Column(db.String(255), nullable=False)
+    direccion = db.Column(db.String(255), nullable=False)
+    codigo = db.Column(db.String(50), nullable=False)
 
-def get_db_connection():
-    try:
-        connection = mysql.connector.connect(
-            host=Config.MYSQL_HOST,
-            user=Config.MYSQL_USER,
-            password=Config.MYSQL_PASSWORD,
-            database=Config.MYSQL_DB
-        )
-        return connection
-    except Error as e:
-        print(f"Error connecting to MySQL: {e}")
-        return None
+    def serialize(self):
+        return {
+            'id_drogueria': self.id_drogueria,
+            'nombre': self.nombre,
+            'direccion': self.direccion,
+            'codigo': self.codigo
+        }
 
-class Drogueria:
-    def __init__(self, id_drogueria=None, nombre=None, direccion=None, codigo=None):
-        self.id_drogueria = id_drogueria
-        self.nombre = nombre
-        self.direccion = direccion
-        self.codigo = codigo
+    @classmethod
+    def get_all(cls):
+        return cls.query.all()
 
-    @staticmethod
-    def get_all():
-        connection = get_db_connection()
-        if connection:
-            cursor = connection.cursor(dictionary=True)
-            cursor.execute("SELECT * FROM drogueria")
-            droguerias = cursor.fetchall()
-            cursor.close()
-            connection.close()
-            return droguerias
-        return []
+    @classmethod
+    def create(cls, nombre, direccion, codigo):
+        drogueria = cls(nombre=nombre, direccion=direccion, codigo=codigo)
+        db.session.add(drogueria)
+        db.session.commit()
+        return drogueria
 
-    @staticmethod
-    def create(nombre, direccion, codigo):
-        connection = get_db_connection()
-        if connection:
-            cursor = connection.cursor()
-            cursor.execute("INSERT INTO drogueria (nombre, direccion, codigo) VALUES (%s, %s, %s)", (nombre, direccion, codigo))
-            connection.commit()
-            cursor.close()
-            connection.close()
-            return True
-        return False

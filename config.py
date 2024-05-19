@@ -1,7 +1,5 @@
 import os
 
 class Config:
-    MYSQL_HOST = 'localhost'
-    MYSQL_USER = 'DESKTOP-IMIOCSF\\SQLEXPRESS'
-    MYSQL_PASSWORD = 'MELINA'
-    MYSQL_DB = 'medi_turnos'
+    SQLALCHEMY_DATABASE_URI = 'mssql+pyodbc://DESKTOP-IMIOCSF\\SQLEXPRESS/medi_turnos?driver=SQL+Server'
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
