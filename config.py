@@ -1,5 +1,5 @@
-import os
+from env_variables import envs
 
 class Config:
-    SQLALCHEMY_DATABASE_URI = 'mssql+pyodbc://DESKTOP-IMIOCSF\\SQLEXPRESS/medi_turnos?driver=SQL+Server'
-    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    SQLALCHEMY_DATABASE_URI = envs["DATABASE_URI"]
+    SQLALCHEMY_TRACK_MODIFICATIONS = envs["TRACK_MODIFICATIONS"]
