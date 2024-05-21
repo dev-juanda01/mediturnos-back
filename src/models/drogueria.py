@@ -2,9 +2,9 @@ from flask_sqlalchemy import SQLAlchemy
 from config import Config
 from flask import Flask
 
-app = Flask(__name__)
-app.config.from_object(Config)
-db = SQLAlchemy(app)
+# app = Flask(__name__)
+# app.config.from_object(Config)
+db = SQLAlchemy()
 
 class Drogueria(db.Model):
     __tablename__ = 'droguerias'
