@@ -3,6 +3,7 @@ from src.models.receta_medica import RecetaMedica, db
 from datetime import datetime
 import pytz
 
+# Definición del blueprint para recetas médicas
 receta_medica_bp = Blueprint('receta_medica_bp', __name__)
 
 @receta_medica_bp.route('/recetas-medicas', methods=['GET'])
@@ -30,6 +31,8 @@ def create_receta_medica():
         # Convertir fecha_str a objeto datetime
         local_tz = pytz.timezone('America/Bogota')
         fecha = local_tz.localize(datetime.strptime(fecha_str, '%Y-%m-%d %H:%M:%S'))
+
+         # Crear la receta médica en la base de datos
         receta = RecetaMedica.create(
             id_paciente=id_paciente, id_eps=id_eps, medico=medico,
             id_medicamento=id_medicamento, fecha=fecha, codigo=codigo

@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
 from src.models.drogueria import Drogueria, db
 
-
+# Definición del blueprint para droguerías
 drogueria_bp = Blueprint('drogueria_bp', __name__)
 
 @drogueria_bp.route('/droguerias', methods=['GET'])

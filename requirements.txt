@@ -1,5 +1,4 @@
 blinker==1.8.2
-click @ file:///work/perseverance-python-buildout/croot/click_1698845879718/work
 colorama==0.4.6
 Flask==3.0.3
 Flask-SQLAlchemy==3.1.1

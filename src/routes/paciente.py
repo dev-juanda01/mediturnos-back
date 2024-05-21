@@ -1,6 +1,8 @@
 from flask import Blueprint, request, jsonify
 from src.models.paciente import Paciente, db
 
+
+# Definición del blueprint para pacientes
 paciente_bp = Blueprint('paciente_bp', __name__)
 
 @paciente_bp.route('/pacientes', methods=['GET'])

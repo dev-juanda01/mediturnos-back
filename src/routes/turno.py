@@ -4,6 +4,7 @@ from datetime import datetime
 import pytz
 import pyodbc
 
+# Definición del blueprint para turnos
 turno_bp = Blueprint('turno_bp', __name__)
 
 @turno_bp.route('/turnos', methods=['GET'])
