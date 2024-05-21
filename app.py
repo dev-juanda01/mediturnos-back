@@ -4,6 +4,7 @@ from src.routes.usuario import usuario_bp
 from src.routes.paciente import paciente_bp
 from src.routes.medicamento import medicamento_bp
 from src.routes.receta_medica import receta_medica_bp
+from src.routes.turno import turno_bp
 from config import Config
 from src.models.drogueria import db
 
@@ -22,6 +23,7 @@ app.register_blueprint(usuario_bp, url_prefix='/api')
 app.register_blueprint(paciente_bp, url_prefix='/api')
 app.register_blueprint(medicamento_bp, url_prefix='/api')
 app.register_blueprint(receta_medica_bp, url_prefix='/api')
+app.register_blueprint(turno_bp, url_prefix='/api')
 
 # Inicializar la base de datos SQLAlchemy
 db.init_app(app)
