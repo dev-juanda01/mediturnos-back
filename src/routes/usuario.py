@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 from src.models.usuario import Usuario, db
-
+import re
 
 # Definición del blueprint para usuarios
 usuario_bp = Blueprint('usuario_bp', __name__)
@@ -32,3 +32,29 @@ def create_usuario():
     except Exception as e:
         db.session.rollback()
         return jsonify({'message': f'Error al crear usuario: {str(e)}'}), 500
+
+@usuario_bp.route('/usuarios/login', methods=['POST'])
+def login_usuario():
+    data = request.json
+    correo = data.get('correo')
+    password = data.get('password')
+
+    if not correo or not password:
+        return jsonify({'message': 'Faltan correo o contraseña'}), 400
+
+    # Validación de formato de correo electrónico
+    if not validate_email(correo):
+        return jsonify({'message': 'Formato de correo electrónico inválido'}), 400
+
+    usuario = Usuario.login(correo=correo, password=password)
+
+    if not usuario:
+        return jsonify({'message': 'Correo o contraseña incorrectos'}), 401
+
+    return jsonify({'message': 'Login exitoso', 'usuario': usuario.serialize()}), 200
+
+def validate_email(email):
+    # Validación simple del formato de correo electrónico
+    if re.match(r"[^@]+@[^@]+\.[^@]+", email):
+        return True
+    return False
