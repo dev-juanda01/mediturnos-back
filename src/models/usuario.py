@@ -14,7 +14,7 @@ class Usuario(db.Model):
     telefono = db.Column(db.String(50), nullable=False)
     direccion = db.Column(db.String(255), nullable=False)
     codigo = db.Column(db.String(50), nullable=False)
-    correo = db.Column(db.String(255), nullable=False)
+    correo = db.Column(db.String(255), nullable=False, unique=True)
     password = db.Column(db.String(255), nullable=False)
 
     def serialize(self):
@@ -37,3 +37,7 @@ class Usuario(db.Model):
         db.session.add(usuario)
         db.session.commit()
         return usuario
+
+    @classmethod
+    def login(cls, correo, password):
+        return cls.query.filter_by(correo=correo, password=password).first()
