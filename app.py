@@ -25,6 +25,7 @@ app.register_blueprint(medicamento_bp, url_prefix='/api')
 app.register_blueprint(receta_medica_bp, url_prefix='/api')
 app.register_blueprint(turno_bp, url_prefix='/api')
 
+
 # Inicializar la base de datos SQLAlchemy
 db.init_app(app)
 
