@@ -46,3 +46,15 @@ class Turno(db.Model):
         db.session.add(turno)
         db.session.commit()
         return turno
+    @classmethod
+    def get_active_turn_by_user(cls, id_usuario):
+        return cls.query.filter_by(id_usuario=id_usuario, estado='Activo').first()
+
+    @classmethod
+    def update_estado(cls, id_turno, nuevo_estado):
+        turno = cls.query.get(id_turno)
+        if turno:
+            turno.estado = nuevo_estado
+            db.session.commit()
+            return turno
+        return None
