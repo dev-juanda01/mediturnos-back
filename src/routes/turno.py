@@ -75,3 +75,24 @@ def update_turno_estado(id_turno):
             return jsonify({'message': 'Turno no encontrado'}), 404
     except Exception as e:
         return jsonify({'message': f'Error al actualizar el estado del turno: {str(e)}'}), 500
+
+@turno_bp.route('/turnos/activos', methods=['GET'])
+def get_all_active_turnos():
+    try:
+        turnos = Turno.get_all_active()
+        return jsonify([turno.serialize() for turno in turnos]), 200
+    except Exception as e:
+        return jsonify({'message': f'Error al obtener los turnos activos: {str(e)}'}), 500
+
+@turno_bp.route('/turnos/reporte', methods=['GET'])
+def get_historial_turnos():
+    fecha_str = request.args.get('fecha')
+    if not fecha_str:
+        return jsonify({'message': 'Fecha es requerida'}), 400
+
+    try:
+        fecha = datetime.strptime(fecha_str, '%Y-%m-%d')
+        turnos = Turno.get_historial_by_date(fecha)
+        return jsonify([turno.serialize() for turno in turnos]), 200
+    except Exception as e:
+        return jsonify({'message': f'Error al obtener el historial de turnos: {str(e)}'}), 500
