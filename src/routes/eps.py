@@ -4,6 +4,7 @@ from src.models.eps import Eps, db
 # Definir un Blueprint para las rutas de EPS
 eps_bp = Blueprint('eps_bp', __name__)
 
+# Endpoint para obtener todas las eps
 @eps_bp.route('/eps', methods=['GET'])
 def get_eps():
     try:
@@ -12,6 +13,7 @@ def get_eps():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+# Endpoint para crear una nueva eps
 @eps_bp.route('/eps', methods=['POST'])
 def create_eps():
     data = request.json

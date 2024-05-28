@@ -6,6 +6,7 @@ import pytz
 # Definición del blueprint para turnos
 turno_bp = Blueprint('turno_bp', __name__)
 
+# Endpoint para obtener todos los turnos
 @turno_bp.route('/turnos', methods=['GET'])
 def get_turnos():
     try:
@@ -14,6 +15,7 @@ def get_turnos():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+# Endpoint para crear un nuevo turno
 @turno_bp.route('/turnos', methods=['POST'])
 def create_turno():
     data = request.json
@@ -27,6 +29,7 @@ def create_turno():
     novedades = data.get('novedades')
     limite_recetas = data.get('limite_recetas')
 
+    # Valida que  todos los campos necesarios esten
     if not id_drogueria or not la_receta_medica or not id_usuario or not estado or not tipo or not fecha_asignacion_str or not limite_recetas:
         return jsonify({'message': 'Faltan datos'}), 400
 
@@ -48,6 +51,7 @@ def create_turno():
         db.session.rollback()
         return jsonify({'message': f'Error al crear turno: {str(e)}'}), 500
 
+# Endpoint para obtener el turno activo de un usuario específico
 @turno_bp.route('/turnos/activo/<int:id_usuario>', methods=['GET'])
 def get_active_turno_by_user(id_usuario):
     try:
@@ -59,11 +63,13 @@ def get_active_turno_by_user(id_usuario):
     except Exception as e:
         return jsonify({'message': f'Error al obtener el turno activo: {str(e)}'}), 500
 
+# Endpoint para actualizar el estado de un turno específico
 @turno_bp.route('/turnos/<int:id_turno>/estado', methods=['PUT'])
 def update_turno_estado(id_turno):
     data = request.json
     nuevo_estado = data.get('estado')
 
+    # Valida que el nuevo estado este presente en la solicitud
     if not nuevo_estado:
         return jsonify({'message': 'Falta el estado'}), 400
 
@@ -76,6 +82,7 @@ def update_turno_estado(id_turno):
     except Exception as e:
         return jsonify({'message': f'Error al actualizar el estado del turno: {str(e)}'}), 500
 
+# Endpoint para obtener todos los turnos activos
 @turno_bp.route('/turnos/activos', methods=['GET'])
 def get_all_active_turnos():
     try:
@@ -84,6 +91,7 @@ def get_all_active_turnos():
     except Exception as e:
         return jsonify({'message': f'Error al obtener los turnos activos: {str(e)}'}), 500
 
+# Endpoint para obtener el historial de turnos inactivos para una fecha específica
 @turno_bp.route('/turnos/reporte', methods=['GET'])
 def get_historial_turnos():
     fecha_str = request.args.get('fecha')

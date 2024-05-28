@@ -4,6 +4,7 @@ from src.models.medicamento import Medicamento, db
 # Definición del blueprint para medicamentos
 medicamento_bp = Blueprint('medicamento_bp', __name__)
 
+# Endpoint para obtener todos los medicamentos
 @medicamento_bp.route('/medicamentos', methods=['GET'])
 def get_medicamentos():
     try:
@@ -12,6 +13,7 @@ def get_medicamentos():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+# Endpoint para crear un nuevo medicamento
 @medicamento_bp.route('/medicamentos', methods=['POST'])
 def create_medicamento():
     data = request.json
@@ -24,9 +26,11 @@ def create_medicamento():
     presentacion = data.get('presentacion')
     tipo = data.get('tipo')
 
+    # Validación de datos requeridos
     if not nombre or not codigo or not stock or not laboratorio or not dosis_medica or not concentracion or not presentacion or not tipo:
         return jsonify({'message': 'Faltan datos'}), 400
 
+    # Crear el medicamento en la base de datos
     try:
         medicamento = Medicamento.create(
             nombre=nombre, codigo=codigo, stock=stock, laboratorio=laboratorio,

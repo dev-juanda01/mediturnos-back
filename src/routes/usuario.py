@@ -5,6 +5,7 @@ import re
 # Definición del blueprint para usuarios
 usuario_bp = Blueprint('usuario_bp', __name__)
 
+# Endpoint para obtener todos los usuarios
 @usuario_bp.route('/usuarios', methods=['GET'])
 def get_usuarios():
     try:
@@ -13,6 +14,7 @@ def get_usuarios():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+# Endpoint para crear un nuevo usuario
 @usuario_bp.route('/usuarios', methods=['POST'])
 def create_usuario():
     data = request.json
@@ -23,6 +25,7 @@ def create_usuario():
     correo = data.get('correo')
     password = data.get('password')
 
+    # Valida que todos los campos necesarios estén
     if not nombre or not telefono or not direccion or not codigo or not correo or not password:
         return jsonify({'message': 'Faltan datos'}), 400
 
@@ -33,12 +36,14 @@ def create_usuario():
         db.session.rollback()
         return jsonify({'message': f'Error al crear usuario: {str(e)}'}), 500
 
+# Endpoint para realizar el inicio de sesión de un usuario
 @usuario_bp.route('/usuarios/login', methods=['POST'])
 def login_usuario():
     data = request.json
     correo = data.get('correo')
     password = data.get('password')
 
+    # Valida que se proporcione correo y contraseña
     if not correo or not password:
         return jsonify({'message': 'Faltan correo o contraseña'}), 400
 
@@ -53,7 +58,9 @@ def login_usuario():
 
     return jsonify({'message': 'Login exitoso', 'usuario': usuario.serialize()}), 200
 
+# Función para validar el formato de un correo electrónico
 def validate_email(email):
+
     # Validación simple del formato de correo electrónico
     if re.match(r"[^@]+@[^@]+\.[^@]+", email):
         return True

@@ -6,6 +6,7 @@ import pytz
 # Definición del blueprint para recetas médicas
 receta_medica_bp = Blueprint('receta_medica_bp', __name__)
 
+# Endpoint para obtener todas las recetas médicas almacenadas
 @receta_medica_bp.route('/recetas-medicas', methods=['GET'])
 def get_recetas_medicas():
     try:
@@ -14,6 +15,7 @@ def get_recetas_medicas():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+# Endpoint para crear una nueva receta médica
 @receta_medica_bp.route('/recetas-medicas', methods=['POST'])
 def create_receta_medica():
     data = request.json
@@ -24,6 +26,7 @@ def create_receta_medica():
     fecha_str = data.get('fecha')
     codigo = data.get('codigo')
 
+    # Valida que todos los datos estén
     if not id_paciente or not id_eps or not medico or not id_medicamento or not fecha_str or not codigo:
         return jsonify({'message': 'Faltan datos'}), 400
 

@@ -1,8 +1,10 @@
 from src.models.drogueria import db
 
+# Modelo para las recetas médicas en la aplicación
 class RecetaMedica(db.Model):
     __tablename__ = 'recetas_medicas'
 
+    # Campos de la tabla 'recetas_medicas'
     id_receta_medica = db.Column(db.Integer, primary_key=True, autoincrement=True)
     id_paciente = db.Column(db.Integer, db.ForeignKey('pacientes.id_paciente'), nullable=False)
     id_eps = db.Column(db.Integer, nullable=False)
@@ -11,9 +13,11 @@ class RecetaMedica(db.Model):
     fecha = db.Column(db.DateTime, nullable=False)
     codigo = db.Column(db.String(50), nullable=False)
 
+    # Las relaciones que se tiene con otras tablas
     paciente = db.relationship('Paciente', backref=db.backref('recetas', lazy=True))
     medicamento = db.relationship('Medicamento', backref=db.backref('recetas', lazy=True))
 
+    # Serializa el objeto RecetaMedica a un formato JSON-friendly
     def serialize(self):
         return {
             'id_receta_medica': self.id_receta_medica,
@@ -25,10 +29,12 @@ class RecetaMedica(db.Model):
             'codigo': self.codigo
         }
 
+    # Obtiene todas las recetas médicas almacenadas
     @classmethod
     def get_all(cls):
         return cls.query.all()
 
+    # Crea una nueva receta médica con los parámetros dados y la guarda en la base de datos
     @classmethod
     def create(cls, id_paciente, id_eps, medico, id_medicamento, fecha, codigo):
         receta = cls(
