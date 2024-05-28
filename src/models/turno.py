@@ -51,6 +51,10 @@ class Turno(db.Model):
         return cls.query.filter_by(id_usuario=id_usuario, estado='Activo').first()
 
     @classmethod
+    def get_all_active(cls):
+        return cls.query.filter_by(estado='Activo').all()
+
+    @classmethod
     def update_estado(cls, id_turno, nuevo_estado):
         turno = cls.query.get(id_turno)
         if turno:
@@ -58,3 +62,10 @@ class Turno(db.Model):
             db.session.commit()
             return turno
         return None
+
+    @classmethod
+    def get_historial_by_date(cls, fecha):
+        return cls.query.filter(
+            cls.estado == 'Inactivo',
+            db.func.date(cls.fecha_finalizacion) == fecha
+        ).all()
