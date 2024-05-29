@@ -1,4 +1,5 @@
 from flask import Flask, jsonify
+from flask_cors import CORS
 from src.routes.drogueria import drogueria_bp
 from src.routes.usuario import usuario_bp
 from src.routes.paciente import paciente_bp
@@ -29,6 +30,8 @@ app.register_blueprint(eps_bp, url_prefix='/api')
 
 # Inicializar la base de datos SQLAlchemy
 db.init_app(app)
+
+CORS(app)
 
 # Correr la aplicación
 if __name__ == "__main__":
