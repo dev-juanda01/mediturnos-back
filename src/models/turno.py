@@ -25,9 +25,9 @@ class Turno(db.Model):
     def serialize(self):
         return {
             'id_turno': self.id_turno,
-            'id_drogueria': self.id_drogueria,
-            'la_receta_medica': self.la_receta_medica,
-            'id_usuario': self.id_usuario,
+            'drogueria': self.drogueria.serialize() if self.drogueria else None,
+            'la_receta_medica': self.receta_medica.serialize() if self.receta_medica else None,
+            'usuario': self.usuario.serialize() if self.usuario else None,
             'estado': self.estado,
             'tipo': self.tipo,
             'fecha_asignacion': self.fecha_asignacion.isoformat(),
